@@ -30,8 +30,9 @@ pipeline {
                     docker rm -f notes-app-jenkins-test-db >/dev/null 2>&1 || true
 
                     docker run -d \
-                      --name notes-app-jenkins-test-db \
-                      mongo:8
+  			--network container:jenkins \
+  			--name notes-app-jenkins-test-db \
+ 			 mongo:8
 
                     cleanup() {
                       docker rm -f notes-app-jenkins-test-db >/dev/null 2>&1 || true
