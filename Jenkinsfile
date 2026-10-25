@@ -2,6 +2,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS26'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -11,6 +15,8 @@ pipeline {
 
         stage('Build') {
             steps {
+                sh 'node --version'
+                sh 'npm --version'
                 sh 'npm ci --prefix backend'
                 sh 'npm ci --prefix frontend'
                 sh 'npm run build --prefix frontend'
@@ -25,14 +31,13 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t notes-app-backend:latest ./backend'
-                sh 'docker build -t notes-app-frontend:latest ./frontend'
+                echo 'Docker image build will be enabled after configuring Docker access.'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deployment to AWS EC2 will be configured next.'
+                echo 'AWS EC2 deployment will be configured later.'
             }
         }
     }
