@@ -70,14 +70,35 @@ pipeline {
                 docker build -t notes-app-frontend:latest ./frontend
                 '''
             }
-        }   
-
-
+        }
         stage('Deploy') {
             steps {
-                echo 'AWS EC2 deployment will be configured next.'
+                sshagent(credentials: ['ec2-ssh-key']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=accept-new ec2-user@13.233.193.133 '
+                    cd ~/notes-app &&
+                    git pull --ff-only origin main &&
+                    docker compose up -d --build
+                    '
+                    '''
+                }
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+        
     }
 
     post {
