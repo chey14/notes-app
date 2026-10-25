@@ -62,11 +62,16 @@ pipeline {
             }
         }
 
+        
         stage('Docker Build') {
             steps {
-                echo 'Docker image build will be configured next.'
+                sh '''
+                docker build -t notes-app-backend:latest ./backend
+                docker build -t notes-app-frontend:latest ./frontend
+                '''
             }
-        }
+        }   
+
 
         stage('Deploy') {
             steps {
